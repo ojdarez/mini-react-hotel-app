@@ -1,12 +1,40 @@
-import React from 'react';
-import hotelServices from './data/hotel_services.json';
+import React, { useState, useEffect } from 'react';
+//import hotelServices from './data/hotel_services.json';
 import hotelAccessibility from './data/hotel_accessibility.json';
 
 const HotelInfo = () => {
+
+    const [hotelServices, setHotelServices] = useState([]);
+    const [hotelAccessibility, setHotelAccessibility] = useState([]);
+    
+    const loadHotelService = async() => {
+        //Query the API Gateway
+        const resp = await fetch('https://2zf4drirgj.execute-api.us-east-1.amazonaws.com/Production/services');
+        let jsonData = await resp.json();
+
+        //Assign response data to our state variable
+        setHotelServices(jsonData);
+    } 
+
+    const loadHotelAccessibility = async() => {
+        //Query the API Gateway
+        const resp = await fetch('https://2zf4drirgj.execute-api.us-east-1.amazonaws.com/Production/accessibilities');
+        let jsonData = await resp.json();
+
+        //Assign response data to our state variable
+        setHotelAccessibility(jsonData);
+    } 
+    
+    
+    useEffect(()=> {
+        loadHotelService();
+        loadHotelAccessibility();
+    }, []);
+
     return (
         <div className="scene" id="hotelinfo">
             <article className="heading">
-              <h1>Essential Info</h1>
+                <h1>Essential Info</h1>
             </article>
             <article id="usefulinfo">
                 <section id="arrivalinfo">
